@@ -2,7 +2,6 @@ from sqlalchemy_serializer import SerializerMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 
-# This metadata setup is common in these labs to handle naming conventions
 metadata = MetaData(naming_convention={
     "ix": "ix_%(column_0_label)s",
     "uq": "uq_%(table_name)s_%(column_0_name)s",
@@ -16,7 +15,9 @@ db = SQLAlchemy(metadata=metadata)
 class Plant(db.Model, SerializerMixin):
     __tablename__ = 'plants'
 
-    # THESE COLUMNS MUST BE PRESENT
+    # Serialization rules help avoid recursion and hide unnecessary internal fields
+    serialize_rules = () 
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     image = db.Column(db.String)
